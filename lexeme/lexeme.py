@@ -1,6 +1,6 @@
 import cmd
 import argparse
-from lexeme.Interface import *
+from .lexeme.Interface import *
 
 class Lexeme(cmd.Cmd):
     intro = "Welcome to Lexeme! Input '?' for help and commands."

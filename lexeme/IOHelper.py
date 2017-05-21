@@ -7,7 +7,7 @@ DEFAULT_CONFIG = 'default-config.txt'
 
 
 def getParser(filename):
-    print("Getting parser for", filename)
+    print(("Getting parser for", filename))
     parser = configparser.ConfigParser()
 
     if filename is None:
@@ -148,15 +148,15 @@ def createMenu(prompt, options):
     '''Takes a list of options and a prompt. Creates an input menu. Returns
     the item selected by the user.
     '''
-    print(prompt + ":")
+    print((prompt + ":"))
     for index, item in enumerate(options):
         bullet = "(" + str(index + 1) + ") "
-        print(bullet + item)
+        print((bullet + item))
 
-    response = int(input("Enter selection: "))
-    while response not in range(1, len(options) + 1):
+    response = int(eval(input("Enter selection: ")))
+    while response not in list(range(1, len(options) + 1)):
         print("Selection not in range")
-        response = int(input("Enter selection: "))
+        response = int(eval(input("Enter selection: ")))
 
     return options[response - 1]
 
@@ -167,19 +167,19 @@ def chooseOption(prompt, options):
         olist = olist + o + "/"
     olist = olist + options[-1] + "): "
 
-    response = input(prompt + olist)
+    response = eval(input(prompt + olist))
 
     while response not in options:
         print("Response not in options")
-        response = input(prompt + olist)
+        response = eval(input(prompt + olist))
 
     return response
 
 
 def yesNo(prompt):
-    response = input(prompt + "? (y/n): ")
+    response = eval(input(prompt + "? (y/n): "))
     while response not in ["y", "n"]:
-        response = input(prompt + "? (y/n): ")
+        response = eval(input(prompt + "? (y/n): "))
 
     if response == "y":
         return True

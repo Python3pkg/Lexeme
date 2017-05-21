@@ -1,7 +1,7 @@
 import dataset
 import re
 
-from lexeme.Generator import generateWord
+from .lexeme.Generator import generateWord
 
 db = None
 phonemes = {}
@@ -13,7 +13,7 @@ def transcribePhonemes(word):
     '''Transcribe from orthographic representation to phonetic
     representation.
     '''
-    for current, new in phonemes.items():
+    for current, new in list(phonemes.items()):
         word = re.sub(current, new, word)
 
     word = "/" + word + "/"
@@ -27,7 +27,7 @@ def transcribeAllophones(word):
     '''
     word = word[1:-1]
 
-    for current, new in allophones.items():
+    for current, new in list(allophones.items()):
         word = re.sub(current, new, word)
 
     word = "[" + word + "]"
@@ -71,7 +71,7 @@ def exportWords(filename):
     '''Takes filename and outputs csv.'''
     allWords = db['words'].all()
     dataset.freeze(allWords, format='csv', filename=filename)
-    print("Exported all words to " + filename)
+    print(("Exported all words to " + filename))
 
 
 def searchWords(term):

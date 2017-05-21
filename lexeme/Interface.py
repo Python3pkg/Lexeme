@@ -1,6 +1,6 @@
-import lexeme.Library as Library
+from . import lexeme.Library as Library
 import csv
-import lexeme.IOHelper as IOHelper
+from . import lexeme.IOHelper as IOHelper
 import sys
 import os
 from tabulate import tabulate
@@ -14,8 +14,8 @@ formatString = ""
 def add():
     '''Interface for addWord().'''
     word = {}
-    word['english'] = input("Enter meaning in English: ")
-    word['word'] = input("Enter word in conlang: ")
+    word['english'] = eval(input("Enter meaning in English: "))
+    word['word'] = eval(input("Enter word in conlang: "))
 
     forms = Library.getFieldOptions("form")
     forms.append("other")
@@ -23,7 +23,7 @@ def add():
     form = IOHelper.chooseOption("Enter word form",
                                 forms)
     if form == "other":
-        form = input("Enter new word form: ")
+        form = eval(input("Enter new word form: "))
 
     word['form'] = form
 
@@ -35,7 +35,7 @@ def add():
 def modify():
     '''Modify an existing word.'''
     try:
-        conword = input("Enter word in conlang: ")
+        conword = eval(input("Enter word in conlang: "))
         if Library.wordExists(conlang=conword):
             word = Library.findConWord(conword, pop=False)
             outputWord(word)
@@ -70,7 +70,7 @@ def modify():
                 keys.append("DELETE")
             else:
                 if key in ["word", "english"]:
-                    word[key] = input("Enter new value: ")
+                    word[key] = eval(input("Enter new value: "))
                 else:
                     values = Library.getFieldOptions(key)
                     values.append("other")
@@ -79,7 +79,7 @@ def modify():
                                               values)
 
                     if v == "other":
-                        v = input("Enter new value: ")
+                        v = eval(input("Enter new value: "))
 
                     word[key] = v
 
@@ -124,7 +124,7 @@ def decline():
     ''' Allows user to select word to decline and declension, then outputs the
     declined word.
     '''
-    word = input("Enter word (in conlang) to decline: ")
+    word = eval(input("Enter word (in conlang) to decline: "))
 
     try:
         result = Library.findConWord(word)
@@ -159,7 +159,7 @@ def outputWordList(wordList):
             headers.append(item.capitalize())
 
     print("")
-    print(tabulate(table, headers=headers))
+    print((tabulate(table, headers=headers)))
     print("")
 
 
@@ -214,18 +214,18 @@ def outputWord(word, first="english"):
             headers.append(item.capitalize())
 
     print("")
-    print(tabulate(table, headers=headers))
+    print((tabulate(table, headers=headers)))
     print("")
 
 
 def statistics():
     '''Interface for getStatistics().'''
-    print("Words: " + str(Library.getStatistics()))
+    print(("Words: " + str(Library.getStatistics())))
 
 
 def search():
     '''Interface for searchWords().'''
-    term = input("Enter search term: ")
+    term = eval(input("Enter search term: "))
 
     results = Library.searchWords(term)
 
@@ -243,14 +243,14 @@ def search():
 
 def batchgenerate():
     '''Run each word in file through generate.'''
-    filename = input("Enter location of words file: ")
+    filename = eval(input("Enter location of words file: "))
     try:
         with open(filename, "r") as f:
             for word in f:
                 clearScreen()
-                print("Generating word " + word.strip() + "...")
+                print(("Generating word " + word.strip() + "..."))
                 generate(word.strip())
-                input("Press enter to continue...")
+                eval(input("Press enter to continue..."))
     except FileNotFoundError:
         print("File not found! Double-check the path you are using.")
         return 1
@@ -260,7 +260,7 @@ def batchgenerate():
 
 def importWords():
     '''Add words from csv file to database.'''
-    filename = input("Enter location of word csv file: ")
+    filename = eval(input("Enter location of word csv file: "))
     try:
         with open(filename, "r") as f:
             reader = csv.DictReader(f)
@@ -275,7 +275,7 @@ def importWords():
 def generate(english=None):
     '''Interface to generateWord().'''
     if english is None:
-        english = input("Enter word in English: ")
+        english = eval(input("Enter word in English: "))
 
     if Library.wordExists(english=english):
         print("Word already exists!")
@@ -290,7 +290,7 @@ def generate(english=None):
                                  forms)
 
     if form == "other":
-        form = input("Enter new word form: ")
+        form = eval(input("Enter new word form: "))
 
     finalised = False
     while finalised is not True:
@@ -304,7 +304,7 @@ def generate(english=None):
         if accepted == "y":
             finalised = True
         elif accepted == "e":
-            word['word'] = input("Enter modified word: ")
+            word['word'] = eval(input("Enter modified word: "))
             finalised = True
 
     word = addCustomFields(word)
@@ -328,8 +328,8 @@ def addCustomFields(word, prompt=True):
         options.append("other")
         field = IOHelper.chooseOption("Enter desired field to add", options)
         if field == "other":
-            new = input("Enter new field: ")
-            value = input("Enter word value: ")
+            new = eval(input("Enter new field: "))
+            value = eval(input("Enter word value: "))
             word[new] = value
         else:
             values = Library.getFieldOptions(field)
@@ -339,7 +339,7 @@ def addCustomFields(word, prompt=True):
                                       values)
 
             if v == "other":
-                v = input("Enter new word value: ")
+                v = eval(input("Enter new word value: "))
 
             word[field] = v
 
@@ -376,11 +376,11 @@ def loadData(filename=None):
 
 def exportText():
     '''Interface for exportText().'''
-    filename = input("Enter filename to export: ")
+    filename = eval(input("Enter filename to export: "))
     Library.exportText(filename, formatString)
 
 
 def export():
     '''Interface for exportWords().'''
-    filename = input("Enter filename to export: ")
+    filename = eval(input("Enter filename to export: "))
     Library.exportWords(filename)
